@@ -1,0 +1,5 @@
+Name: instance-for-eks
+Description: This template deploys EKS
+Engine: cloudformation
+EstimateCost: "100"
+Provider: "AWS"

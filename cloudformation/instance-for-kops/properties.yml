@@ -2,3 +2,4 @@ Name: instance-for-kops
 Description: This instance template has the main tools to deploy a new kops kubernetes cluster
 Engine: cloudformation
 EstimateCost: "100"
+Provider: "AWS"
