@@ -2,12 +2,12 @@ Resources:
   MyVPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: ##CidrBlock##
+      CidrBlock: ##CidrBlockVpc##
   MySubnet:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref MyVPC
-      CidrBlock: ##CidrBlock##
+      CidrBlock: ##CidrBlockSubnet##
   MySecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
