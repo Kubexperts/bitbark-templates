@@ -1,0 +1,5 @@
+Name: vpc-01
+Description: This VPC template creates 1 VPC and 3 public subnets
+Engine: cloudformation
+EstimateCost: "0"
+Provider: "AWS"

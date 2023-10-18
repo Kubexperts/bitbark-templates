@@ -1,0 +1,35 @@
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: ##CidrBlockVpc##
+      Tags:
+        - Key: Name
+          Value: ##TagNameVpc##
+  SubnetPublicA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: ##CidrBlockSubnetPublicA##
+      AvailabilityZone: ##AvailabilityZoneSubnetPublicA##
+      Tags:
+        - Key: Name
+          Value: ##TagNameSubnetPublicA##
+  SubnetPublicB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: ##CidrBlockSubnetPublicB##
+      AvailabilityZone: ##AvailabilityZoneSubnetPublicB##
+      Tags:
+        - Key: Name
+          Value: ##TagNameSubnetPublicB##
+  SubnetPublicC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: ##CidrBlockSubnetPublicC##
+      AvailabilityZone: ##AvailabilityZoneSubnetPublicC##
+      Tags:
+        - Key: Name
+          Value: ##TagNameSubnetPublicC##
