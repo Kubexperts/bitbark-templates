@@ -1,23 +1,17 @@
 Resources:
-  MyVPC:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock: ##CidrBlockVpc##
-  MySubnet:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref MyVPC
-      CidrBlock: ##CidrBlockVpc##
   MySecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: ##GroupDescription##
-      VpcId: !Ref MyVPC
+      VpcId: ##VpcId##'
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
+#When you create a new key pair,
+#the private key is saved to AWS Systems Manager Parameter Store,
+#using a parameter with the following name: /ec2/keypair/{key_pair_id}
   MyKeyPair:
     Type: AWS::EC2::KeyPair
     Properties:
@@ -26,11 +20,27 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: ##ImageId##
-      InstanceType: t2.micro
+      InstanceType: t3a.nano
       KeyName: !Ref MyKeyPair
       NetworkInterfaces:
         - AssociatePublicIpAddress: true
           DeviceIndex: 0
-          SubnetId: !Ref MySubnet
+          SubnetId:  ##SubnetId##
           GroupSet:
             - !Ref MySecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo apt-get update
+          curl -LO https://dl.k8s.io/release/v1.28.2/bin/linux/amd64/kubectl
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          sudo apt install unzip
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+          wget https://get.helm.sh/helm-v3.13.1-linux-386.tar.gz
+          tar -zxvf helm-v3.13.1-linux-386.tar.gz
+          sudo mv linux-386/helm /usr/local/bin/helm
+          git clone https://github.com/fatliverfreddy/kubeselect.git
+          cd kubeselect/
+          sudo cp kubeselect /usr/local/bin
