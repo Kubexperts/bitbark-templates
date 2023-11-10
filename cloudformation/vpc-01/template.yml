@@ -33,3 +33,66 @@ Resources:
       Tags:
         - Key: Name
           Value: ##TagNameSubnetPublicC##
+  SubnetPrivateA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: ##CidrBlockSubnetPrivateA##
+      AvailabilityZone: ##AvailabilityZoneSubnetPrivateA##
+      Tags:
+        - Key: Name
+          Value: ##TagNameSubnetPrivateA##
+  SubnetPrivateB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: ##CidrBlockSubnetPrivateB##
+      AvailabilityZone: ##AvailabilityZoneSubnetPrivateB##
+      Tags:
+        - Key: Name
+          Value: ##TagNameSubnetPrivateB##
+  SubnetPrivateC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: ##CidrBlockSubnetPrivateC##
+      AvailabilityZone: ##AvailabilityZoneSubnetPrivateC##
+      Tags:
+        - Key: Name
+          Value: ##TagNameSubnetPrivateC##
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: ##TagNameInternetGateway##
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+  NATGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NATGatewayEIP.AllocationId
+      SubnetId: !Ref PublicSubnet
+      Tags:
+        - Key: Name
+          Value: ##TagNameNATGateway##
+  NATGatewayEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+    Tags:
+      - Key: Name
+        Value: ##TagNameNATGatewayEIP##
+  RouteNATGateway:
+    DependsOn: NATGateway
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: '0.0.0.0/0'
+      NatGatewayId: !Ref NATGateway
+    Tags:
+      - Key: Name
+        Value: ##TagNameRouteNATGateway##
